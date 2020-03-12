@@ -1,0 +1,21 @@
+<%- include('include/header'); %>
+<title>Aplikasi</title>
+<body>
+    <% if(message){ %>
+        <div style="text-align: center" class="alert alert-<%= message.type %>">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong><%= message.intro %></strong> <%= message.message %>
+        </div>
+      <% } %>  
+      <%for (var i = 0 ; i < data.length ; i ++){%>
+        <div>
+            <h3>Nomor Tempat : <%=data[i].nomer_meja%></h3>
+            <h3>keterangan Tempat : <%=data[i].keterangan%></h3>
+            <%if(data[i].id_pemesan == 0){%>
+                <h3 style="color: green;">Siap Dipesan</h3>
+                <a href="/pesan/<%=data[i].nomer_meja%>/<%=data[i].id_warung%>" class="btn btn-success">Pesan</a>
+            <%}else{%>
+                <h3 style="color: red;">sudah Dipesan</h3>
+            <%}%>            
+        </div>
+      <%}%>

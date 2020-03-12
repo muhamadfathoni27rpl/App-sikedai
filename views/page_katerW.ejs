@@ -1,0 +1,81 @@
+<%- include('include/header'); %>
+    <title>Menu anda</title>
+</head>
+<body>
+    <% if(message){ %>
+        <div style="text-align: center" class="alert alert-<%= message.type %>">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong><%= message.intro %></strong> <%= message.message %>
+        </div>
+      <% } %>
+            <h1>Pesanan Anda</h1>
+    <% if(data == 0){ %>
+        <h1>Kosong</h1>
+    <% } else { %>
+        <div class="row">
+        <% for(var i = 0 ; i < data.length ; i ++){ %>
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="..." alt="Card image cap">
+                <div class="card-body">                    
+                  <h5 class="card-title"><%= data[i].nama_menu %></h5>
+                  <p class="card-text">RP.<%= data[i].harga_menu %></p>
+                  <p class="card-text"><%= data[i].desk_menu %></p>
+                  <button  class="btn btn-warning" data-toggle="modal" data-target="#edit_mak"
+                  data-menu="<%= data[i].nama_menu %>" data-desk="<%= data[i].desk_menu %>" data-harga="<%= data[i].harga_menu %>"
+                  data-id="<%= data[i].id_menuWarung %>">edit</button>                  
+                  <a href="/Adminmenu/hapus/<%= data[i].id_menuWarung %>" class="btn btn-danger">hapus</a>                  
+                </div>
+              </div>
+                <!-- MODAL -->
+                <div class="modal fade" id="edit_mak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="label">Edit Menu Makanan  </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="/editMenu" method="POST">
+                              <div class="form-group">
+                                <input type="hidden" class="idne" name="idne" value="">
+                                  <label for="message-text" class="col-form-label">Nama Menu Makanan</label>
+                                  <input type="text" required name="namaMak" class="menu form-control" id="recipient-name" placeholder="Masukan Nama Menu Anda" value="">
+                              </div>
+                              <div class="form-group">
+                                  <label for="message-text" class="col-form-label">Harga Menu Makanan</label>
+                                  <input type="number" required name="hargaMak" class="harga form-control" id="harga" placeholder="Masukan Harga Menu Anda" value="">
+                              </div>                    
+                              <div class="form-group">
+                                  <label for="exampleFormControlTextarea1">Deskripsi Makanan</label>
+                                  <textarea name="deskripsi" class="desk form-control rounded-0" id="exampleFormControlTextarea1" placeholder="Masukan Deskripsi Singkat Warung anda"  rows="9"></textarea>
+                              </div>                     
+                              <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                              <input type="submit" class="btn btn-info" value="Tambahkan">
+                              </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- MODAL --> 
+                <script>
+                  $('#edit_mak').on('show.bs.modal', function (event) {
+                  var button = $(event.relatedTarget)
+                  var recipient1 = button.data('menu')
+                  var recipient2 = button.data('harga')
+                  var recipient3 = button.data('desk')
+                  var recipient4 = button.data('id')
+                  var modal = $(this)                
+                  modal.find('.menu').val(recipient1)                  
+                  modal.find('.harga').val(recipient2)
+                  modal.find('.desk').text(recipient3)
+                  modal.find('.idne').val(recipient4)
+                  })
+                </script>                  
+        <% } %>        
+    </div>
+    <% } %>
+</body>

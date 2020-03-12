@@ -1,0 +1,37 @@
+<%- include('include/header'); %>
+<title>Aplikasi</title>
+<body>
+    <% if(message){ %>
+        <div style="text-align: center" class="alert alert-<%= message.type %>">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong><%= message.intro %></strong> <%= message.message %>
+        </div>
+      <% } %>
+    <% if(data == 0){ %>
+        <a href="/login">Login</a>        
+    <%} else{ %>
+        <a href="/riwayat">Riwayat Pemesanan</a>
+        <a href="/warung">Kelola Warung</a>
+        <a href="/logout">Keluar</a>
+        <h3>Welcome <%= data.nama %>    </h3>
+    <% } %>
+    <form action="/search/" method="GET">
+      <label>Cari: </label>
+        <input type="text" name="keyword" placeholder="Cari Makanan...." />
+        <input type="submit" value="Cari" />
+      </form>
+    <% for (var i = 0 ; i < warong.length ; i++) { %>
+      <h1><%= warong[i].nama_warung %></h1>
+      <p><%= warong[i].deskripsi%></p>      
+      <a onclick="pageRedirect()">Lihat Warung</a>
+      <script>                  
+          
+        function pageRedirect() {
+          var new_url="/lihat/<%- warong[i].infoWarung %>";
+          window.history.pushState("data","Title",new_url);
+          document.title=url;          
+        }      
+      </script> 
+    <% } %>
+</body>
+</html>

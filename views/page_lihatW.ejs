@@ -1,0 +1,42 @@
+<%- include('include/header'); %>
+<title>Aplikasi</title>
+<body>
+    <% if(message){ %>
+        <div style="text-align: center" class="alert alert-<%= message.type %>">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong><%= message.intro %></strong> <%= message.message %>
+        </div>
+      <% } %>      
+      <% if(status == 'Tutup'){ %>
+        <h1 style="color: red;">Status Warung/Restaurant : <%= status %></h1>
+      <%}else{%>
+        <h1 style="color: rgb(20, 238, 30);">Status Warung/Restaurant : <%= status %></h1>
+        <% } %>
+      <h1><%= data.nama_warung %></h1>
+      <h1><%= data.deskripsi %></h1>
+      <%if (data.S_tempat == 0){ %>
+        <h4>Pemesanan Tempat makan :  </h4> <h5 style="color:red;">Tidak Mendukung</h5>
+        <% } else{ %>
+        <h4>Pemesanan Tempat makan :  </h4> <h5 style="color: blue;">Mendukung</h5>        
+        <a href="/tempat/<%= data.infoWarung %>">Cek Tempat</a>
+        <%} %>
+        <%if (data.S_katering == 0){ %>
+          <h4>Pemesanan Katering :  </h4> <h5 style="color:red;">Tidak Mendukung</h5>
+        <% } else{ %>
+          <h4>Pemesanan Katering :  </h1> <h5 style="color: blue;">Mendukung</h5>
+          <a href="/katering/">Pesan Katering Sekarang !</a>
+        <%} %>
+        <br>
+      <h1>Jam Buka : <%= data.jamBuka %></h1>
+      <h1>Jam Tutup :<%= data.jamTutup %></h1>
+      <h1>Orang Menilai <%= data.total_b %></h1>
+      <h1> Nomer Warung : <%= data.hp %></h1>
+      <h1>Lokasi Warung :<%= data.lokasi %></h1>     
+      <h1 style="text-align: center;">Menu Warung</h1>
+      <%for (var lol = 0 ; lol < ko.length ; lol ++){%>        
+      <div>
+        <h3">Nama : <%= ko[lol].nama_menu %></h3>
+        <h3">Harga :<%= ko[lol].harga_menu %></h3>
+        <h3">Deskrpisi : <%= ko[lol].desk_menu %></h3>
+      </div>
+      <%}%> 

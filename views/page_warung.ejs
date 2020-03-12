@@ -1,0 +1,279 @@
+<%- include('include/header'); %>
+    <title>Warung anda</title>
+</head>
+<body>
+    <% if(message){ %>
+        <div style="text-align: center" class="alert alert-<%= message.type %>">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong><%= message.intro %></strong> <%= message.message %>
+        </div>
+      <% } %>
+    <h1>Welcome di halaman warung</h1>
+    <% if(data == 0){ %>
+    <div style="margin-top: 200px;">
+        <h1 style="text-align: center;">Anda Belum Memiliki Restaurant / Warung ?</h1>
+        <button style="width: 100%; text-align:center; margin-top: 10px;" type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#tambah_war"><i class="far fa-edit"></i> Daftar Sekarang !</button>
+    </div>
+    <!-- MODAL -->
+    <div class="modal fade" id="tambah_war" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="label">Daftar Warung  </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="/addWarung" method="POST">
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Nama Warung / Restaurant</label>
+                        <input type="text" required name="namaWar" class="form-control" id="recipient-name" placeholder="Masukan Nama Warung Anda">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Deskripsi Warung / Restaurant</label>
+                        <textarea name="deskripsi" class="form-control rounded-0" id="exampleFormControlTextarea1" placeholder="Masukan Deskripsi Singkat Warung anda" rows="9"></textarea>
+                    </div>     
+                    <div class="form-group">
+                      <label for="message-text" class="col-form-label">Lokasi warung</label>                      
+                      <input type="text" required name="lokasi" class="form-control" id="recipient-name" placeholder="Masukan Lokasi Anda">
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class="col-form-label">Jam Buka</label>
+                    <input type="text" required name="jb" class="form-control" id="recipient-name" placeholder="Masukan Jam Buka Warung Anda">
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class="col-form-label">Jam Tutup</label>
+                    <input type="text" required name="jt" class="form-control" id="recipient-name" placeholder="Masukan Jam Tutup Warung Anda">
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class="col-form-label">Nomer Hp</label>
+                    <input type="number" required name="hp" class="form-control" id="recipient-name" placeholder="Masukan Nomer Hp Anda">
+                  </div>                 
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <input type="submit" class="btn btn-warning" value="Daftar">
+                    </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- MODAL --> 
+
+
+
+    <% } else {%>
+        <h1 style="text-align: center;"><%= data.nama_warung %></h1>
+        <h4 style="text-align: center;"><%= data.deskripsi %></h4>        
+        <button style="margin-left: 50%; transform: translateX(-50%);" type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit_war1" data-idne="<%= data.id_warung %>"><i class="far fa-edit"></i> Edit Warung</button>
+        <p>Lokasi           : <%= data.lokasi %></p>
+        <p>Jam Buka         : <%= data.jamBuka %></p>
+        <p>Jam Tutup        : <%= data.jamTutup %></p>
+        <p>Nomer Hp         : <%= data.hp %></p>        
+        <p>Rating           : <%= data.total_b %></p>  
+        <% if(data.S_katering == 0){%>
+          <p>Katering : <strong style="color: red;">Tidak Support</strong></p>
+          <form action="/StatuskaterAktif" id="aktifkan" method="POST">                
+            <input type="checkbox" id="cek" name="vehicle3" value="Boat">                                    
+          </form>            
+          <script>
+              $(document).on('click', '#cek', function(e) {
+                e.preventDefault();
+                swal("Konfirmasi", "Fitur Katering Warung / Restaurant Anda Akan Di Aktifkan")
+              .then((zxc) => {
+              if (zxc) {
+                swal("Berhasil Di Aktif kan", {
+                icon: "success",
+                }).then(function (result) {
+                    $('#aktifkan').submit();});	
+              }
+              else {
+                swal("Dibatalkan");
+                return false;
+              }
+              });	
+            });
+            </script>
+        <% }else {%>
+          <p>Katering : <strong style="color: blue;">Support</strong></p>                                         
+                <form action="/StatuskaterNon" id="aktifMati" method="POST">                    
+                        <input id="hapos" type="checkbox" checked>   
+                        <a href="/Adminkatering">Setting Katering</a>                                          
+                </form>
+                
+                <script>
+                    $(document).on('click', '#hapos', function(e) {
+                      e.preventDefault();
+                      swal({
+                    title: "Apakah yakin ?",
+                    text: "Fitur Katering Akan dinonaktifkan ",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                    if (willDelete) {
+                      swal("Berhasil dinonaktif kan", {
+                      icon: "success",
+                      }).then(function (result) {
+                          $('#aktifMati').submit();});	
+                    }
+                    else {
+                      swal("Dibatalkan");
+                      return false;
+                    }
+                    });	
+                  });
+                  </script>
+        <% } %>
+      
+      
+      <!-- STATUS TEMPAT  -->
+
+        <% if(data.S_tempat == 0){%>
+          <p>Pemesanan Tempat : <strong style="color: red;">Tidak Support</strong></p>                    
+            <form action="/StatustempatAktif" id="aktifkan" method="POST">                
+                    <input type="checkbox" id="cek" name="vehicle3" value="Boat">                                    
+            </form>            
+            <script>
+                $(document).on('click', '#cek', function(e) {
+                  e.preventDefault();
+                  swal("Konfirmasi", "Pemesanan Tempat Warung / Restaurant Anda Akan Di Aktifkan")
+                .then((zxc) => {
+                if (zxc) {
+                  swal("Berhasil Di Aktif kan", {
+                  icon: "success",
+                  }).then(function (result) {
+                      $('#aktifkan').submit();});	
+                }
+                else {
+                  swal("Dibatalkan");
+                  return false;
+                }
+                });	
+              });
+              </script>
+        <% }else {%>          
+          <p>Pemesanan Tempat : <strong style="color: blue;">Support</strong></p>                                                 
+            <form action="/StatustempatNon" id="aktifMati" method="POST">                
+                    <input id="hapos" type="checkbox" checked>                    
+                    <a href="/Admintempat">Setting Pemesanan Tempat</a>                     
+            </form>
+            <script>
+                $(document).on('click', '#hapos', function(e) {
+                  e.preventDefault();
+                  swal({
+                title: "Apakah yakin ?",
+                text: "Pemesanan Tempat Akan dinonaktifkan",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                })
+                .then((willDelete) => {
+                if (willDelete) {
+                  swal("Berhasil dinonaktif kan", {
+                  icon: "success",
+                  }).then(function (result) {
+                      $('#aktifMati').submit();});	
+                }
+                else {
+                  swal("Dibatalkan");
+                  return false;
+                }
+                });	
+              });
+              </script>
+        <% } %>                                  
+        
+        
+
+
+        <button style="width: 100%; text-align:center; margin-top: 10px;" type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#edit_war2" data-idne="<%= data.id_infoWarung %>"><i class="far fa-edit"></i><%= data.id_infoWarung %> Edit Info Lengkap</button>
+        <a style="width: 100%; text-align:center; margin-top: 10px;" type="button" class="btn btn-outline-info" href="/Adminmenu">Lihat Menu</a>
+           <!-- MODAL -->
+    <div class="modal fade" id="edit_war1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="label">Edit Warung  </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="/edit1Warung" method="POST">
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Nama Warung / Restaurant</label>
+                        <input type="hidden" name="idne" class="idne" value="">
+                        <input type="text" required name="namaWar" class="form-control" id="recipient-name" placeholder="Masukan Nama Warung Anda">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Deskripsi Warung / Restaurant</label>
+                        <textarea name="deskripsi" class="form-control rounded-0" id="exampleFormControlTextarea1" placeholder="Masukan Deskripsi Singkat Warung anda" rows="9"></textarea>
+                    </div>                     
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <input type="submit" class="btn btn-warning" value="Daftar">
+                    </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="modal fade" id="edit_war2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="label">Edit Lengkap Warung</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <form action="/edit2Warung" method="POST">
+                  <div class="form-group">
+                      <label for="message-text" class="col-form-label">Lokasi warung</label>
+                      <input type="hidden" name="idne" class="idne" value="">
+                      <input type="text" required name="lokasi" class="form-control" id="recipient-name" placeholder="Masukan Lokasi Anda">
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class="col-form-label">Jam Buka</label>
+                    <input type="text" required name="jb" class="form-control" id="recipient-name" placeholder="Masukan Jam Buka Warung Anda">
+                </div>
+                <div class="form-group">
+                  <label for="message-text" class="col-form-label">Jam Tutup</label>
+                  <input type="text" required name="jt" class="form-control" id="recipient-name" placeholder="Masukan Jam Tutup Warung Anda">
+                </div>
+                <div class="form-group">
+                  <label for="message-text" class="col-form-label">Nomer Hp</label>
+                  <input type="text" required name="hp" class="form-control" id="recipient-name" placeholder="Masukan Nomer Hp Anda">
+                </div>                 
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                  <input type="submit" class="btn btn-warning" value="Daftar">
+                  </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $('#edit_war1').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget)
+      var recipient1 = button.data('idne')      
+      var modal = $(this)                
+      modal.find('.idne').val(recipient1)                        
+      })
+      $('#edit_war2').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget)
+      var recipient1 = button.data('idne')      
+      var modal = $(this)                
+      modal.find('.idne').val(recipient1)                        
+      })
+    </script>   
+    <!-- MODAL --> 
+    <% } %>
+</body>
+</html>

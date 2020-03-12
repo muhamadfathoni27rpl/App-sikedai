@@ -1,0 +1,17 @@
+<%- include('include/header'); %>
+<title>Aplikasi</title>
+<body>
+    <% if(message){ %>
+        <div style="text-align: center" class="alert alert-<%= message.type %>">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong><%= message.intro %></strong> <%= message.message %>
+        </div>
+      <% } %> 
+      <h1>Pesanan Yang Belum Terverifikasi oleh Admin</h1>
+      <h5>Note : <strong style="color: red;">Berikan QRcode Berikut Kepada Kasir Untuk Memverifikasi</strong></h5>
+      <% for ( var i = 0 ; i < data.length ; i ++) {%>    
+        
+       <img src="/<%= data[i].gambar_qr %>" alt="QR CODE">        
+      <% } %>
+      <h2>Jumlah Pesanan Yang Sudah Terverifikasi</h2>
+      <h3><%= sukses %> <strong style="color: blue;">Selesai</strong></h3>

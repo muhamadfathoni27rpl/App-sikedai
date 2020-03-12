@@ -1,0 +1,7 @@
+<%if(dataCari == 0){%>
+    <h1>Kosong</h1>
+<% }else{ %>
+<%for (var i = 0 ; i < dataCari.length ; i ++){%>
+    <h1><%= dataCari[i].nama_menu %></h1>
+<%}%>
+<% } %>

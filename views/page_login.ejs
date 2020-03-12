@@ -1,0 +1,24 @@
+<%- include('include/header'); %>
+<title>Login</title>
+<body>
+    <% if(message){ %>
+        <div style="text-align: center" class="alert alert-<%= message.type %>">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong><%= message.intro %></strong> <%= message.message %>
+        </div>
+      <% } %>
+    <form action="/login" method="POST">
+        <h1>LOGIN</h1>
+        <input type="email" id="ml" name="ml" placeholder="Masukan Email"/>
+        <input type="password" id="pw" name="pw" placeholder="Masukan Password"/>
+        <input type="submit" value="Login">
+    </form>   
+    <form action="/daftar" method="POST">
+        <h1>Daftar</h1>
+        <input type="text" name="nama" placeholder="nama">
+        <input type="email" name="ml" placeholder="Masukan Email Aktif">
+        <input type="password" name="pw" placeholder="Masukan Pasword">
+        <input type="submit" id="sg" value="Daftar">
+    </form>
+</body>
+</html>
